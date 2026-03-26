@@ -38,16 +38,20 @@ def _format_experience_brief(exp, max_achievements=1):
 
 
 def _format_experience_detail(exp):
-    """详细格式化一条经历"""
+    """详细格式化一条经历（供API prompt使用，包含完整信息）"""
     lines = [f"· {exp['title']}"]
     if exp.get("time"):
         lines[0] += f"（{exp['time']}）"
     if exp.get("description"):
         lines.append(f"  {exp['description']}")
-    for a in exp.get("achievements", []):
-        lines.append(f"  - {a}")
+    for d in exp.get("details", []):
+        lines.append(f"  · {d}")
+    if exp.get("achievements"):
+        lines.append("  量化成果：")
+        for a in exp["achievements"]:
+            lines.append(f"  - {a}")
     if exp.get("tags"):
-        lines.append(f"  标签: {', '.join(exp['tags'])}")
+        lines.append(f"  技能标签: {', '.join(exp['tags'])}")
     return "\n".join(lines)
 
 

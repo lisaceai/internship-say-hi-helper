@@ -14,28 +14,123 @@
   },
   "education": [
     {
-      "school": "华东理工大学",
+      "school": "华东理工大学（211）",
       "major": "会计学",
-      "degree": "硕士",
+      "degree": "硕士（在读）",
       "start_date": "2025-09",
       "end_date": "2027-06",
       "gpa": "",
-      "highlights": []
+      "highlights": [
+        "撰写管理学论文，应用GROW模型分析蔚来供应链成本优化",
+        "会计学背景天然理解ToB/供应链/财务场景的业务语言和底层逻辑",
+        "跨领域转型AI PM，兼具业务理解力与技术实践力"
+      ]
+    },
+    {
+      "school": "杭州电子科技大学（浙江省首批重点）",
+      "major": "会计学",
+      "degree": "本科",
+      "start_date": "2020-09",
+      "end_date": "2024-06",
+      "gpa": "",
+      "highlights": [
+        "校优秀学生奖学金",
+        "校优秀共青团干部",
+        "校优秀学生干部",
+        "\"外研社杯\"英语演讲比赛校二等奖",
+        "校电子商务竞赛三等奖（立项）",
+        "校优秀毕业论文"
+      ]
     }
   ],
   "skills": {
-    "programming": ["Python", "SQL"],
-    "tools": ["Excel", "PPT", "Power BI"],
-    "languages": [],
-    "other": []
+    "ai_llm": ["Prompt Engineering（CoT/Few-shot）", "RAG", "Embedding", "Agent架构", "智谱GLM", "Coze", "Manus"],
+    "programming": ["Python", "SQL", "VBA", "FastAPI"],
+    "data": ["数据分析", "数据清洗", "Web Scraping", "Excel（函数/透视表）", "数据看板"],
+    "product": ["需求调研", "PRD", "POC验证", "竞品分析", "业务逻辑拆解", "AI产品运营"],
+    "tools": ["Pinecone", "Apify", "Render", "GitHub Actions", "Vercel", "飞书多维表格", "SAP", "MS Office"],
+    "languages": ["雅思7.5（听力8/阅读8.5）", "CET-6（567）", "CET-4（596）"],
+    "soft_skills": ["活动策划", "推文撰写", "社群运营", "跨领域思维（会计→AI PM）"]
   },
-  "internships": [],
-  "projects": [],
+  "internships": [
+    {
+      "id": "EXP-01",
+      "company": "蔚来汽车",
+      "position": "AI产品经理实习生（ToB供应链方向）",
+      "department": "",
+      "start_date": "2025-12",
+      "end_date": "2026-04",
+      "description": "搭建供应商寻源助手Agent：深度参与需求调研→工作流设计→POC验证→验收报告全流程，依托公司自研智能体平台搭建12节点工作流，实现从需求解析到推荐清单输出的端到端自动化",
+      "achievements": [
+        "寻源助手覆盖约50%新合作伙伴寻源场景，单次寻源周期从2-4周缩短至数天",
+        "预估年新增合作伙伴约2,910家，年节省采购人力成本约40万元",
+        "独立搭建5项AI自动化提效工具",
+        "AI推广累计辐射人数超200人"
+      ],
+      "details": [
+        "需求解析与供应商检索：大模型自动解析用户上传的SOR及需求文档，提取地区、资质、注册时长等关键筛选字段，设置人工确认中断节点；匹配品类策略库获取寻源渠道，查询内部供应商库",
+        "外部寻源与资质校验：并行启动两条外部检索链路（寻源渠道+竞品车企合作案例），调用天眼查进行企业资质核验（企业名称真实性、注册资金、合作案例等）",
+        "输出效果：三来源候选供应商合并，按优先级排序，输出不超10家的对比清单（企业名称、来源、注册时间、合作案例及天眼查链接）",
+        "提效工具搭建：针对采购物流链路痛点，利用Manus、自研智能体平台、飞书多维表格，独立搭建5项AI自动化提效工具；通过多轮Prompt Engineering（CoT、Few-shot）迭代，解决AI处理批量长文本时的幻觉与token过度使用问题",
+        "AI产品推广与运营：独立运营部门AI主题订阅号，每周发布\"AI+采购\"实战案例与行业动态；深度拆解20余个业务场景，构建《AI4P实战案例库》；参与AI赋能采购项目启动会策划与宣讲"
+      ],
+      "tags": ["AI Agent", "Workflow编排", "Prompt Engineering", "POC验证", "PRD", "供应链采购", "Manus", "飞书多维表格", "天眼查API", "AI产品经理", "ToB", "需求调研", "AI运营"]
+    },
+    {
+      "id": "EXP-02",
+      "company": "博世集团",
+      "position": "数据运营实习生（财务数据方向）",
+      "department": "",
+      "start_date": "2023-03",
+      "end_date": "2023-09",
+      "description": "负责财务数据自动化与数据分析支持，参与RPA财务工具开发与测试",
+      "achievements": [
+        "RPA自动化整体提效约50%"
+      ],
+      "details": [
+        "业务支持：利用AI编写VBA代码实现跨工作表合并；对接IT部门参与RPA财务工具开发与测试，将重复性财务操作自动化；加入\"政企共赢\"跨部门团队，协助收集整理数据；研读政策文件，精准筛选适配企业的补助申报项目并汇报",
+        "数据分析：独立搭建数据看板并定期维护，协助财务BP进行月度财务分析，为管理决策提供数据支撑；利用Excel函数清洗与预处理进出口数据，结合数据透视表多维度分析，申报至政府系统"
+      ],
+      "tags": ["VBA", "RPA", "数据看板", "Excel", "财务分析", "数据清洗", "政策研读", "数据分析", "数据运营", "BI", "自动化", "报表"]
+    }
+  ],
+  "projects": [
+    {
+      "id": "EXP-03",
+      "name": "基于RAG的AI资讯总结与推送工具",
+      "role": "独立开发者",
+      "start_date": "2025-11",
+      "end_date": "2025-12",
+      "description": "独立开发基于RAG的AI资讯总结与推送工具，实现全流程自动化的AI领域信息聚合与智能问答",
+      "achievements": [
+        "产品稳定运行后可帮助用户每日节省80%以上信息获取时间",
+        "全流程自动化，零人工干预"
+      ],
+      "details": [
+        "数据采集与智能摘要：利用Apify自动采集X上AI领域KOL每日动态，通过智谱GLM模型对推文进行总结，以HTML邮件形式定时推送",
+        "RAG语义检索与问答：基于Pinecone向量数据库与智谱Embedding API构建RAG检索增强生成系统，支持历史推文语义搜索、自然语言问答及热点趋势分析，提供带原文溯源的智能问答能力",
+        "全流程自动化部署：FastAPI构建后端服务部署于Render，通过GitHub Actions实现每日定时数据采集、摘要生成、向量入库及邮件发送的全流程自动化"
+      ],
+      "link": "https://webforaibuilderdigest.vercel.app",
+      "tags": ["Python", "RAG", "Embedding", "Pinecone", "智谱GLM API", "Apify", "FastAPI", "Render", "GitHub Actions", "Web Scraping", "AI应用开发", "LLM", "独立项目", "后端开发", "全栈"]
+    }
+  ],
   "competitions": [],
-  "campus_activities": [],
+  "campus_activities": [
+    {
+      "id": "EXP-05",
+      "role": "活动策划与运营",
+      "organization": "校园体育俱乐部",
+      "start_date": "",
+      "end_date": "",
+      "description": "深度参与策划并推广校园文化活动，通过撰写推文等方式有效提升社群参与度",
+      "tags": ["活动策划", "内容运营", "推文撰写", "社群运营", "活动运营", "用户运营"]
+    }
+  ],
   "self_evaluation": [
-    "具备扎实的财务与数据分析基础",
-    "善于团队协作，沟通能力强",
-    "学习能力强，细心负责"
+    "会计学背景天然理解ToB/供应链/财务场景的业务语言和底层逻辑",
+    "跨领域转型AI PM，兼具业务理解力与技术实践力",
+    "雅思7.5（听力8/阅读8.5），英语沟通能力强",
+    "善于团队协作，细心负责，学习能力强"
   ]
 }

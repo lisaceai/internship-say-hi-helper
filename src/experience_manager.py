@@ -45,10 +45,12 @@ def init_from_resume(resume_path):
 
     for item in resume.get("internships", []):
         experiences.append({
+            "id": item.get("id", ""),
             "type": "internship",
             "title": f'{item["company"]} - {item["position"]}',
             "time": f'{item.get("start_date", "")} ~ {item.get("end_date", "")}',
             "description": item.get("description", ""),
+            "details": item.get("details", []),
             "achievements": item.get("achievements", []),
             "tags": item.get("tags", []),
             "added_at": datetime.now().isoformat(),
@@ -56,12 +58,15 @@ def init_from_resume(resume_path):
 
     for item in resume.get("projects", []):
         experiences.append({
+            "id": item.get("id", ""),
             "type": "project",
             "title": f'{item["name"]} ({item.get("role", "")})',
             "time": f'{item.get("start_date", "")} ~ {item.get("end_date", "")}',
             "description": item.get("description", ""),
+            "details": item.get("details", []),
             "achievements": item.get("achievements", []),
             "tags": item.get("tags", []),
+            "link": item.get("link", ""),
             "added_at": datetime.now().isoformat(),
         })
 

@@ -88,8 +88,8 @@ def match_experiences(jd_text, top_n=5):
                 score += 10
                 matched_tags.append(tag)
 
-        # 内容文本匹配
-        exp_text = exp.get("description", "") + " ".join(exp.get("achievements", []))
+        # 内容文本匹配（包含details字段）
+        exp_text = exp.get("description", "") + " " + " ".join(exp.get("achievements", [])) + " " + " ".join(exp.get("details", []))
         exp_tokens = _tokenize(exp_text)
         overlap = jd_tokens & exp_tokens
         # 过滤掉过短的匹配词
