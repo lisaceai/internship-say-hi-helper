@@ -44,13 +44,13 @@ def setup_api_key(api_key):
     print("✓ API Key 已保存")
 
 
-def call_zhipu(system_prompt, user_prompt, model="glm-4-flash", temperature=0.7):
+def call_zhipu(system_prompt, user_prompt, model="glm-4.7", temperature=0.7):
     """调用智谱API
 
     Args:
         system_prompt: 系统提示词
         user_prompt: 用户提示词
-        model: 模型名称，默认 glm-4-flash（免费额度大）
+        model: 模型名称，默认 glm-4.7
         temperature: 温度参数
 
     Returns:
