@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+data/experience_db.json
+data/resume.json
+*.egg-info/
+.venv/
