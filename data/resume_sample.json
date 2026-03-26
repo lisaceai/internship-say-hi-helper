@@ -1,0 +1,82 @@
+{
+  "basic_info": {
+    "name": "你的姓名",
+    "university": "XX大学",
+    "major": "XX专业",
+    "degree": "本科/硕士",
+    "graduation_year": "2026",
+    "phone": "",
+    "email": "",
+    "wechat": ""
+  },
+  "education": [
+    {
+      "school": "XX大学",
+      "major": "XX专业",
+      "degree": "本科",
+      "start_date": "2022-09",
+      "end_date": "2026-06",
+      "gpa": "",
+      "highlights": ["奖学金", "相关课程"]
+    }
+  ],
+  "skills": {
+    "programming": ["Python", "Java"],
+    "tools": ["Git", "Docker"],
+    "languages": ["英语CET-6"],
+    "other": []
+  },
+  "internships": [
+    {
+      "company": "XX公司",
+      "position": "XX实习生",
+      "department": "",
+      "start_date": "2025-06",
+      "end_date": "2025-09",
+      "description": "负责XXX",
+      "achievements": [
+        "完成了XXX项目，提升了XX%的效率",
+        "独立开发了XXX功能模块"
+      ],
+      "tags": ["Python", "数据分析", "后端开发"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "XX项目",
+      "role": "项目负责人",
+      "start_date": "2025-03",
+      "end_date": "2025-06",
+      "description": "基于XXX技术开发的XXX系统",
+      "achievements": [
+        "设计并实现了XXX架构",
+        "项目获得XXX奖项"
+      ],
+      "tags": ["全栈开发", "React", "Node.js"]
+    }
+  ],
+  "competitions": [
+    {
+      "name": "XX比赛",
+      "award": "一等奖",
+      "date": "2025-05",
+      "description": "参与XXX方向的比赛",
+      "tags": ["算法", "团队协作"]
+    }
+  ],
+  "campus_activities": [
+    {
+      "role": "XX部长",
+      "organization": "学生会",
+      "start_date": "2023-09",
+      "end_date": "2024-06",
+      "description": "组织了XXX活动",
+      "tags": ["领导力", "沟通协调"]
+    }
+  ],
+  "self_evaluation": [
+    "具备扎实的XXX基础",
+    "善于团队协作，沟通能力强",
+    "学习能力强，对新技术保持热情"
+  ]
+}

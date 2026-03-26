@@ -1,0 +1,1 @@
+您好！我是{university}{major}的{name}，{graduation_year}届毕业生。{experience_highlight}对贵司的{position}岗位非常感兴趣，{match_reason}希望能有机会进一步沟通，期待您的回复！

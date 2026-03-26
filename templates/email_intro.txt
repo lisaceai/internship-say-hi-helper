@@ -1,0 +1,22 @@
+尊敬的HR/面试官：
+
+您好！我是{university}{major}的{name}，目前是{degree}在读，预计{graduation_year}年毕业。
+
+通过{channel}了解到贵司正在招聘{position}实习生，我对此岗位非常感兴趣，特此自荐。
+
+【个人亮点】
+{highlights}
+
+【相关经历】
+{matched_experiences}
+
+【为什么选择贵司】
+{why_company}
+
+附件为我的简历，期待能有机会与您进一步交流。感谢您的时间！
+
+此致
+敬礼
+
+{name}
+{phone} | {email}

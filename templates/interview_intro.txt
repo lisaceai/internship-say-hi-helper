@@ -1,0 +1,11 @@
+面试官您好，我是{name}，来自{university}{major}，{degree}在读，预计{graduation_year}年毕业。
+
+{education_highlight}
+
+在实习/项目经历方面：
+{matched_experiences}
+
+我认为自己与这个岗位的匹配点在于：
+{match_points}
+
+非常期待能加入贵公司，谢谢！
