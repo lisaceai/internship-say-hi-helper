@@ -1,4 +1,4 @@
-"""话术生成器 - 根据JD匹配结果生成各场景话术"""
+"""话术生成器 - 支持本地模板和智谱API两种生成模式"""
 
 import os
 
@@ -6,11 +6,19 @@ from experience_manager import _load_db
 from jd_matcher import match_experiences
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "templates")
+PROMPT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "prompts")
 
 
 def _load_template(name):
     """加载模板文件"""
     path = os.path.join(TEMPLATE_DIR, name)
+    with open(path, "r", encoding="utf-8") as f:
+        return f.read()
+
+
+def _load_prompt(name):
+    """加载prompt文件"""
+    path = os.path.join(PROMPT_DIR, name)
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
 
@@ -32,19 +40,98 @@ def _format_experience_brief(exp, max_achievements=1):
 def _format_experience_detail(exp):
     """详细格式化一条经历"""
     lines = [f"· {exp['title']}"]
+    if exp.get("time"):
+        lines[0] += f"（{exp['time']}）"
     if exp.get("description"):
         lines.append(f"  {exp['description']}")
     for a in exp.get("achievements", []):
         lines.append(f"  - {a}")
+    if exp.get("tags"):
+        lines.append(f"  标签: {', '.join(exp['tags'])}")
     return "\n".join(lines)
 
 
+def _format_matched_experiences(matches):
+    """将匹配结果格式化为候选经历文本（供API prompt使用）"""
+    if not matches:
+        return "（暂无相关经历）"
+    parts = []
+    for i, m in enumerate(matches, 1):
+        exp = m["experience"]
+        parts.append(f"{i}. {_format_experience_detail(exp)}")
+    return "\n".join(parts)
+
+
+# ============================================================
+# 智谱API生成模式
+# ============================================================
+
+def generate_email_api(jd_text, position="该岗位", company="贵司"):
+    """通过智谱API生成求职邮件"""
+    from zhipu_client import call_zhipu
+
+    matches, jd_info = match_experiences(jd_text, top_n=5)
+    candidate_experiences = _format_matched_experiences(matches)
+
+    system_prompt = _load_prompt("email_system.txt")
+    user_template = _load_prompt("email_user.txt")
+    user_prompt = user_template.format(
+        company_name=company,
+        position_name=position,
+        jd_text=jd_text,
+        candidate_experiences=candidate_experiences,
+    )
+
+    return call_zhipu(system_prompt, user_prompt)
+
+
+def generate_boss_api(jd_text, position="该岗位", company="贵司"):
+    """通过智谱API生成Boss直聘打招呼话术"""
+    from zhipu_client import call_zhipu
+
+    matches, jd_info = match_experiences(jd_text, top_n=3)
+    candidate_experiences = _format_matched_experiences(matches)
+
+    system_prompt = _load_prompt("boss_system.txt")
+    user_template = _load_prompt("boss_user.txt")
+    user_prompt = user_template.format(
+        company_name=company,
+        position_name=position,
+        jd_text=jd_text,
+        candidate_experiences=candidate_experiences,
+    )
+
+    return call_zhipu(system_prompt, user_prompt)
+
+
+def generate_interview_api(jd_text, position="该岗位", company="贵司"):
+    """通过智谱API生成面试自我介绍"""
+    from zhipu_client import call_zhipu
+
+    matches, jd_info = match_experiences(jd_text, top_n=5)
+    candidate_experiences = _format_matched_experiences(matches)
+
+    system_prompt = _load_prompt("interview_system.txt")
+    user_template = _load_prompt("interview_user.txt")
+    user_prompt = user_template.format(
+        company_name=company,
+        position_name=position,
+        jd_text=jd_text,
+        candidate_experiences=candidate_experiences,
+    )
+
+    return call_zhipu(system_prompt, user_prompt)
+
+
+# ============================================================
+# 本地模板生成模式（不调API，作为fallback）
+# ============================================================
+
 def generate_boss_greeting(jd_text, position="该", company="贵司"):
-    """生成Boss直聘打招呼话术"""
+    """本地生成Boss直聘打招呼话术"""
     info = _get_basic_info()
     matches, jd_info = match_experiences(jd_text, top_n=2)
 
-    # 构建经历亮点（Boss直聘字数有限，要简短）
     experience_highlight = ""
     if matches:
         top = matches[0]["experience"]
@@ -53,7 +140,6 @@ def generate_boss_greeting(jd_text, position="该", company="贵司"):
         elif top.get("achievements"):
             experience_highlight = f"曾{top['achievements'][0]}，"
 
-    # 构建匹配原因
     match_reason = ""
     if jd_info["keywords"]:
         kw_list = list(jd_info["keywords"])[:3]
@@ -70,20 +156,17 @@ def generate_boss_greeting(jd_text, position="该", company="贵司"):
         match_reason=match_reason,
     )
 
-    # Boss直聘有字数限制（约300字），截断处理
     if len(message) > 280:
         message = message[:277] + "..."
-
     return message
 
 
 def generate_email_intro(jd_text, position="该岗位", company="贵司", channel="招聘平台"):
-    """生成邮件自我介绍"""
+    """本地生成邮件自我介绍"""
     info = _get_basic_info()
     db = _load_db()
     matches, jd_info = match_experiences(jd_text, top_n=3)
 
-    # 个人亮点
     highlights = []
     edu = db.get("education", [])
     if edu:
@@ -106,7 +189,6 @@ def generate_email_intro(jd_text, position="该岗位", company="贵司", channe
 
     highlights_text = "\n".join(f"· {h}" for h in highlights) if highlights else "（请补充个人亮点）"
 
-    # 匹配经历
     exp_texts = []
     for m in matches:
         exp_texts.append(_format_experience_detail(m["experience"]))
@@ -131,12 +213,11 @@ def generate_email_intro(jd_text, position="该岗位", company="贵司", channe
 
 
 def generate_interview_intro(jd_text, position="该岗位"):
-    """生成面试自我介绍话术"""
+    """本地生成面试自我介绍话术"""
     info = _get_basic_info()
     db = _load_db()
     matches, jd_info = match_experiences(jd_text, top_n=3)
 
-    # 教育亮点
     edu = db.get("education", [])
     edu_highlight = ""
     if edu:
@@ -149,7 +230,6 @@ def generate_interview_intro(jd_text, position="该岗位"):
         if parts:
             edu_highlight = f"在校期间，{'，'.join(parts)}。"
 
-    # 匹配经历（面试版，更详细但口语化）
     exp_parts = []
     for m in matches:
         exp = m["experience"]
@@ -159,7 +239,6 @@ def generate_interview_intro(jd_text, position="该岗位"):
         exp_parts.append(part)
     exp_text = "\n".join(f"  {i+1}. {p}" for i, p in enumerate(exp_parts)) if exp_parts else "（请补充经历）"
 
-    # 匹配点
     match_points = []
     all_matched_tags = set()
     for m in matches:
@@ -187,33 +266,66 @@ def generate_interview_intro(jd_text, position="该岗位"):
     return message
 
 
-def generate_all(jd_text, position="该岗位", company="贵司"):
-    """生成所有场景的话术"""
+# ============================================================
+# 统一入口
+# ============================================================
+
+def generate_all(jd_text, position="该岗位", company="贵司", use_api=False):
+    """生成所有场景的话术
+
+    Args:
+        use_api: True=调用智谱API生成，False=本地模板生成
+    """
     print("\n" + "=" * 60)
-    print("  话术生成结果")
+    if use_api:
+        print("  话术生成结果（智谱API模式）")
+    else:
+        print("  话术生成结果（本地模板模式）")
     print("=" * 60)
 
+    results = {}
+
+    # 1. Boss直聘打招呼
     print("\n" + "-" * 40)
     print("【1. Boss直聘打招呼】")
     print("-" * 40)
-    boss = generate_boss_greeting(jd_text, position, company)
+    if use_api:
+        boss = generate_boss_api(jd_text, position, company)
+        if boss is None:
+            print("  API调用失败，回退到本地模板...")
+            boss = generate_boss_greeting(jd_text, position, company)
+    else:
+        boss = generate_boss_greeting(jd_text, position, company)
     print(boss)
     print(f"\n(共{len(boss)}字)")
+    results["boss_greeting"] = boss
 
+    # 2. 求职邮件
     print("\n" + "-" * 40)
-    print("【2. 邮件自我介绍】")
+    print("【2. 求职邮件】")
     print("-" * 40)
-    email = generate_email_intro(jd_text, position, company)
+    if use_api:
+        email = generate_email_api(jd_text, position, company)
+        if email is None:
+            print("  API调用失败，回退到本地模板...")
+            email = generate_email_intro(jd_text, position, company)
+    else:
+        email = generate_email_intro(jd_text, position, company)
     print(email)
+    results["email_intro"] = email
 
+    # 3. 面试自我介绍
     print("\n" + "-" * 40)
     print("【3. 面试自我介绍】")
     print("-" * 40)
-    interview = generate_interview_intro(jd_text, position)
+    if use_api:
+        interview = generate_interview_api(jd_text, position, company)
+        if interview is None:
+            print("  API调用失败，回退到本地模板...")
+            interview = generate_interview_intro(jd_text, position)
+    else:
+        interview = generate_interview_intro(jd_text, position)
     print(interview)
+    results["interview_intro"] = interview
 
-    return {
-        "boss_greeting": boss,
-        "email_intro": email,
-        "interview_intro": interview,
-    }
+    return results

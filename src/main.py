@@ -75,7 +75,14 @@ def cmd_generate(args):
     jd_text = _get_jd_text(args)
     position = args.position or "该岗位"
     company = args.company or "贵司"
-    generate_all(jd_text, position, company)
+    use_api = getattr(args, "api", False)
+    generate_all(jd_text, position, company, use_api=use_api)
+
+
+def cmd_set_key(args):
+    """设置智谱API Key"""
+    from zhipu_client import setup_api_key
+    setup_api_key(args.key)
 
 
 def _get_jd_text(args):
@@ -108,12 +115,13 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 使用示例:
-  python main.py init --resume ../data/resume.json   初始化经验库
-  python main.py add                                  添加新经历
-  python main.py show                                 查看经验库
-  python main.py match --jd "JD内容"                  JD匹配分析
-  python main.py generate --jd "JD内容" -p 后端实习生  生成话术
-  python main.py generate --jd-file jd.txt -p 产品实习 -c 字节跳动
+  python main.py init --resume ../data/resume.json     初始化经验库
+  python main.py add                                    添加新经历
+  python main.py show                                   查看经验库
+  python main.py match --jd "JD内容"                    JD匹配分析
+  python main.py generate --jd "JD内容" -p 后端实习生    生成话术（本地模板）
+  python main.py generate --jd "JD内容" -p 后端实习生 --api  生成话术（智谱API）
+  python main.py set-key YOUR_ZHIPU_API_KEY             设置智谱API Key
         """
     )
     subparsers = parser.add_subparsers(dest="command", help="可用命令")
@@ -143,7 +151,14 @@ def main():
     p_gen.add_argument("--jd-file", help="JD文件路径")
     p_gen.add_argument("--position", "-p", help="岗位名称")
     p_gen.add_argument("--company", "-c", help="公司名称")
+    p_gen.add_argument("--api", action="store_true",
+                       help="使用智谱API生成（需先配置API Key）")
     p_gen.set_defaults(func=cmd_generate)
+
+    # set-key
+    p_key = subparsers.add_parser("set-key", help="设置智谱API Key")
+    p_key.add_argument("key", help="你的智谱API Key")
+    p_key.set_defaults(func=cmd_set_key)
 
     args = parser.parse_args()
     if not args.command:

@@ -1,0 +1,10 @@
+【目标岗位】
+公司：{company_name}
+岗位：{position_name}
+JD全文：
+{jd_text}
+
+【我的相关经历】
+{candidate_experiences}
+
+请生成面试自我介绍话术（1-2分钟，口语化）。
