@@ -7,4 +7,4 @@ JD全文：
 【我的相关经历】
 {candidate_experiences}
 
-请生成Boss直聘打招呼消息（100字以内）。
+请根据以上信息生成BOSS直聘打招呼话术。
